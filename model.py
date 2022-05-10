@@ -69,6 +69,8 @@ class AutoRecModule(pl.LightningModule):
         r_hat = self.autorec(r)
 
         print("Predict:", r_hat)
+        print("R sum", r.sum())
+        print("R hat sum", r_hat.sum())
 
         loss = self.criterion(r, r_hat, mask_r, self.autorec)
         rmse = self.cal_rmse(r, r_hat, mask_r)
