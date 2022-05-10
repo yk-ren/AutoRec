@@ -10,9 +10,7 @@ class AutoRec(nn.Module):
         self,
         d: int = 100,
         k: int = 10,
-        weight_decay: int = 10,
-        min_rating: int = 1,
-        max_rating: int = 5,
+        weight_decay: int = 10
     ):
         """
             d: dimension of input and output
@@ -42,8 +40,7 @@ class AutoRec(nn.Module):
         pre_encoder = self.V.matmul(r.T).T + self.mu
         encoder = torch.sigmoid(pre_encoder)
 
-        pre_decoder = self.W.matmul(encoder.T).T + self.b
-        decoder = torch.clip(pre_decoder, self.min_rating, self.max_rating)
+        decoder = self.W.matmul(encoder.T).T + self.b
 
         return decoder
 
@@ -54,13 +51,11 @@ class AutoRecModule(pl.LightningModule):
         d: int = 100,
         k: int = 10,
         weight_decay: int = 10,
-        min_rating: int = 1,
-        max_rating: int = 5,
         optimizer: dict = None,
         scheduler: dict = None,
     ):
         super().__init__()
-        self.autorec = AutoRec(d, k, weight_decay, min_rating, max_rating)
+        self.autorec = AutoRec(d, k, weight_decay)
         self.criterion = AutoRecLoss()
 
         self.cfg_optimizer = optimizer
@@ -88,6 +83,8 @@ class AutoRecModule(pl.LightningModule):
         r_hat = self.autorec(r)
 
         loss = self.criterion(r, r_hat, mask_r, self.autorec)
+
+        r_hat = torch.clip(r_hat, 1, 5)
         rmse = self.cal_rmse(r, r_hat, mask_r)
 
         self.log("val_loss", loss)
@@ -99,6 +96,8 @@ class AutoRecModule(pl.LightningModule):
         r, mask_r = batch
         r_hat = self.autorec(r)
         loss = self.criterion(r, r_hat, mask_r, self.autorec)
+
+        r_hat = torch.clip(r_hat, 1, 5)
         rmse = self.cal_rmse(r, r_hat, mask_r)
 
         self.log("test_loss", loss)
