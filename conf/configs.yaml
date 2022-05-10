@@ -9,6 +9,8 @@ model:
   d: 3953 # 
   k: 1028
   weight_decay: 100
+  min_rating: 1
+  max_rating: 5
   optimizer:
     lr: 0.001
     betas: [0.9, 0.98]
