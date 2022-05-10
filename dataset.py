@@ -27,14 +27,18 @@ class MovielenDataset(Dataset):
         item_id = subset_rating.movieId
         indices = torch.tensor(list(zip(user_id, item_id))).t()
 
-        self.user_item = torch.sparse_coo_tensor(
-            indices, rating, (user_size, item_size)
-        ).to_dense().to(dtype=torch.float)
+        self.user_item = (
+            torch.sparse_coo_tensor(indices, rating, (user_size, item_size))
+            .to_dense()
+            .to(dtype=torch.float)
+        )
 
         ones = torch.ones_like(rating)
-        self.mask = torch.sparse_coo_tensor(
-            indices, ones, (user_size, item_size)
-        ).to_dense().to(dtype=torch.float)
+        self.mask = (
+            torch.sparse_coo_tensor(indices, ones, (user_size, item_size))
+            .to_dense()
+            .to(dtype=torch.float)
+        )
 
     def __len__(self):
         return self.user_item.size(0)

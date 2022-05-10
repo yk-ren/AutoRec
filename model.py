@@ -6,7 +6,14 @@ from loss import AutoRecLoss
 
 
 class AutoRec(nn.Module):
-    def __init__(self, d: int = 100, k: int = 10, weight_decay: int = 10, min_rating: int = 1, max_rating: int = 5):
+    def __init__(
+        self,
+        d: int = 100,
+        k: int = 10,
+        weight_decay: int = 10,
+        min_rating: int = 1,
+        max_rating: int = 5,
+    ):
         """
             d: dimension of input and output
             k: dimension of latent
@@ -17,7 +24,7 @@ class AutoRec(nn.Module):
         self.b = nn.Parameter(torch.rand(d))
         self.V = nn.Parameter(torch.rand(k, d))
         self.mu = nn.Parameter(torch.rand(k))
-        
+
         self.weight_decay = weight_decay
         self.min_rating = 1
         self.max_rating = 5
@@ -43,19 +50,28 @@ class AutoRec(nn.Module):
 
 class AutoRecModule(pl.LightningModule):
     def __init__(
-        self, d: int = 100, k: int = 10, weight_decay: int = 10, min_rating: int = 1, max_rating: int = 5, optimizer: dict = None
+        self,
+        d: int = 100,
+        k: int = 10,
+        weight_decay: int = 10,
+        min_rating: int = 1,
+        max_rating: int = 5,
+        optimizer: dict = None,
+        scheduler: dict = None,
     ):
         super().__init__()
         self.autorec = AutoRec(d, k, weight_decay, min_rating, max_rating)
         self.criterion = AutoRecLoss()
 
         self.cfg_optimizer = optimizer
+        self.cfg_scheduler = scheduler
 
     def forward(self, r) -> Tensor:
         return self.autorec(r)
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), **self.cfg_optimizer)
+        lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, **self.cfg_scheduler)
         return optimizer
 
     def training_step(self, batch, batch_idx):
@@ -92,5 +108,5 @@ class AutoRecModule(pl.LightningModule):
 
     def cal_rmse(self, r, r_hat, mask_r):
         r_hat = torch.multiply(r_hat, mask_r)
-        mse_loss = nn.functional.mse_loss(r_hat, r, reduce='sum')
+        mse_loss = nn.functional.mse_loss(r_hat, r, reduce="sum")
         return torch.sqrt(mse_loss)
