@@ -70,6 +70,8 @@ class AutoRecModule(pl.LightningModule):
         loss = self.criterion(r, r_hat, mask_r, self.autorec)
         rmse = self.cal_rmse(r, r_hat, mask_r)
 
+        print("RMSE:", rmse.item())
+
         self.log("val_loss", loss)
         self.log("val_rmse", rmse)
 

@@ -23,4 +23,4 @@ trainer:
   max_epochs: 100
   accelerator: auto
   detect_anomaly: True
-  
+  log_every_n_steps: 1
