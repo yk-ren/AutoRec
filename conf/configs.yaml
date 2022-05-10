@@ -3,7 +3,7 @@ dataset:
   sep: ;
 
 datamodule:
-  batch_size: 128
+  batch_size: 32
 
 model:
   d: 3953 # 

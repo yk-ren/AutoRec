@@ -71,12 +71,10 @@ class AutoRecModule(pl.LightningModule):
         r, mask_r = batch
         r_hat = self.autorec(r)
 
-        print(r)
-        print(torch.multiply(r_hat, mask_r))
-        print(r.sum(), torch.multiply(r_hat, mask_r).sum())
-
         loss = self.criterion(r, r_hat, mask_r, self.autorec)
         rmse = self.cal_rmse(r, r_hat, mask_r)
+
+        print(rmse.item())
 
         self.log("val_loss", loss)
         self.log("val_rmse", rmse)
@@ -95,4 +93,6 @@ class AutoRecModule(pl.LightningModule):
         return loss, rmse
 
     def cal_rmse(self, r, r_hat, mask_r):
-        return torch.sqrt(torch.multiply(r - r_hat, mask_r).sum() / r.size(0))
+        r_hat = torch.multiply(mask_r)
+        mse_loss = nn.MSELoss(r, r_hat)
+        return torch.sqrt(mse_loss)
