@@ -3,7 +3,7 @@ dataset:
   sep: ;
 
 datamodule:
-  batch_size: 64
+  batch_size: 128
 
 model:
   d: 3953 # 
@@ -24,7 +24,10 @@ logger:
   name: autorec_logger
 
 trainer:
-  max_epochs: 2000
+  max_epochs: 1000
   accelerator: auto
   detect_anomaly: True
   log_every_n_steps: 1
+  
+ckpt:
+  ckpt_path: D:\My projects\autorec\logs\logger\autorec_logger\version_0\checkpoints\epoch=999-step=48000.ckpt\
