@@ -94,5 +94,5 @@ class AutoRecModule(pl.LightningModule):
 
     def cal_rmse(self, r, r_hat, mask_r):
         r_hat = torch.multiply(mask_r)
-        mse_loss = nn.functional.mse(r, r_hat)
+        mse_loss = nn.functional.mse_loss(r, r_hat)
         return torch.sqrt(mse_loss)
