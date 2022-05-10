@@ -6,12 +6,7 @@ from loss import AutoRecLoss
 
 
 class AutoRec(nn.Module):
-    def __init__(
-        self,
-        d: int = 100,
-        k: int = 10,
-        weight_decay: int = 10
-    ):
+    def __init__(self, d: int = 100, k: int = 10, weight_decay: int = 10):
         """
             d: dimension of input and output
             k: dimension of latent
