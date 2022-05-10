@@ -67,6 +67,9 @@ class AutoRecModule(pl.LightningModule):
     def validation_step(self, batch, batch_idx):
         r, mask_r = batch
         r_hat = self.autorec(r)
+
+        print("Predict:", r_hat)
+
         loss = self.criterion(r, r_hat, mask_r, self.autorec)
         rmse = self.cal_rmse(r, r_hat, mask_r)
 
