@@ -72,7 +72,7 @@ class AutoRecModule(pl.LightningModule):
         r_hat = self.autorec(r)
 
         print(r)
-        print(mask_r)
+        print(r_hat)
         print(r.sum(), r_hat.sum())
 
         loss = self.criterion(r, r_hat, mask_r, self.autorec)
