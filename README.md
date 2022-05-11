@@ -2,7 +2,7 @@
 
 ## Introduction
 
-AutoRec is a type of autoencoder model, which use in collaborative filtering for predicting missing rating of user-item matrix. This respository implement AutoRec model in Pytorch.
+AutoRec is a type of Collaborative Filtering model based on autoencoder paradigm. AutoRec try to predict rating for This respository implement AutoRec model in Pytorch.
 
 ## How to use this respository
 
