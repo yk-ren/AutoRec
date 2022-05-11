@@ -26,7 +26,15 @@ if __name__ == "__main__":
         logger = pl.loggers.tensorboard.TensorBoardLogger(**cfg.logger)
 
         trainer = pl.Trainer(logger=logger, **cfg.trainer)
-        trainer.fit(model, datamodule=dm, ckpt_path=cfg.ckpt.ckpt_path)
-        trainer.test(model, datamodule=dm, ckpt_path=cfg.ckpt.ckpt_path)
+
+        if cfg.ckpt.have_ckpt:
+            trainer.fit(model, datamodule=dm, ckpt_path=cfg.ckpt.ckpt_path)
+        else:
+            trainer.fit(model, datamodule=dm)
+
+        if cfg.ckpt.have_ckpt:
+            trainer.test(model, datamodule=dm, ckpt_path=cfg.ckpt.ckpt_path)
+        else:
+            trainer.test(model, datamodule=dm)
 
     main()

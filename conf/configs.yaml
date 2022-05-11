@@ -30,4 +30,5 @@ trainer:
   log_every_n_steps: 1
   
 ckpt:
+  have_ckpt: False
   ckpt_path: D:\My projects\autorec\logs\logger\autorec_logger\version_0\checkpoints\epoch=999-step=48000.ckpt\
