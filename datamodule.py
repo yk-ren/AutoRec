@@ -17,10 +17,10 @@ class MovielenDataModule(pl.LightningDataModule):
 
     def test_dataloader(self):
         return DataLoader(
-            self.testset, batch_size=self.batch_size, pin_memory=True
+            self.testset, batch_size=len(self.testset), pin_memory=True
         )
 
     def val_dataloader(self):
         return DataLoader(
-            self.testset, batch_size=self.batch_size, pin_memory=True
+            self.testset, batch_size=len(self.testset), pin_memory=True
         )
